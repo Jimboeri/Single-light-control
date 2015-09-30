@@ -6,6 +6,7 @@
 /*
  * Define libraries used here
  */
+#include <EEPROM.h>
 
 /*
  * Pre-processor definitions
@@ -29,19 +30,27 @@
  */
 int motion = 0;           // holds the status of the PIR output
 int led_status = LED_RAMP_UP;
-int ramp_up = 1000;       // milliseconds needed to bring LED up to full brightness
+int ramp_up = 2500;       // milliseconds needed to bring LED up to full brightness
 int ramp_down = 5000;
-int led_on_time = 5000;   // milliseconds the light will stay on before checking the PIR again
+int led_on_time = 10000;   // milliseconds the light will stay on before checking the PIR again
 long var1 = 0;
 int brightness;
 long temp1;
 int sensorValue = 0;        // value read from the pot
 int outputValue = 0;        // value output to the PWM (analog out)
+int report_delay = 5000;    // millisec between reporting on sensor value
+int ambientTrigger = 850;   // Sensor value needs to be below this value before light will come on
 
-unsigned long start_delay = 1000;  // The PIR takes about 1 minute to settle down
+unsigned long start_delay = 10000L;  // The PIR takes about 1 minute to settle down
 unsigned long next_check = 0; // This is the next time the PIR will be checked
 unsigned long start = 0;
 unsigned long current = 0;
+unsigned long report_sensor = 0;
+unsigned long t1 = 0L;
+int t2 = 0;
+
+String inputString = "";         // a string to hold incoming data
+boolean stringComplete = false;  // whether the string is complete
 
 void setup() {
   // put your setup code here, to run once:
@@ -51,6 +60,55 @@ void setup() {
   pinMode(LED, OUTPUT);
   digitalWrite(LED, LOW);
   next_check = millis() + start_delay + led_on_time;
+  // reserve 200 bytes for the inputString:
+  inputString.reserve(200);
+
+  // read from EEPROM
+
+  EEPROM.get(1, t1);      // start delay parameter
+  if (t1 < 4000000000)
+    start_delay = t1;
+  else {
+    EEPROM.put(1, start_delay);
+    Serial.print("Initial setup of ");
+  }
+  Serial.print("Start delay is ");
+  Serial.print(start_delay);
+  Serial.println(" millseconds");
+
+  EEPROM.get(5, t2);      // ramp up parameter
+  if (t2 < 30000000 && t2 > 0)
+    ramp_up = t2;
+  else {
+    EEPROM.put(5, ramp_up);
+    Serial.print("Initial setup of ");
+  }
+  Serial.print("Ramp up time is ");
+  Serial.print(ramp_up);
+  Serial.println(" millseconds");
+
+  EEPROM.get(7, t2);      // ramp down parameter
+  if (t2 < 30000000 && t2 > 0)
+    ramp_down = t2;
+  else {
+    EEPROM.put(7, ramp_down);
+    Serial.print("Initial setup of ");
+  }
+  Serial.print("Ramp down time is ");
+  Serial.print(ramp_down);
+  Serial.println(" millseconds");
+
+  EEPROM.get(9, t2);      // ambientTrigger parameter
+  if (t2 < 30000000 && t2 > 0)
+    ambientTrigger = t2;
+  else {
+    EEPROM.put(9, ambientTrigger);
+    Serial.print("Initial setup of ");
+  }
+  Serial.print("Ambient light level trigger is ");
+  Serial.print(ambientTrigger);
+  Serial.println("");
+
 }
 
 void loop() {
@@ -58,11 +116,23 @@ void loop() {
   motion = digitalRead(PIR_INPUT);
   current = millis();
   sensorValue = analogRead(LDR);
-  // map it to the range of the analog out:
-  outputValue = map(sensorValue, 0, 1023, 0, 255);
-  // change the analog out value:
-  //Serial.println(outputValue);
-  //delay(100);
+
+  serialEvent(); //call the function
+  // print the string when a newline arrives:
+  if (stringComplete) {
+    Serial.println(inputString);
+    // clear the string:
+    inputString = "";
+    stringComplete = false;
+  }
+
+  // output sensor value to serial channel
+  if (report_sensor < current) {
+    report_sensor = current + report_delay;
+    Serial.print("Raw ");
+    Serial.println(sensorValue);
+  }
+
   switch (led_status) {
     case LED_RAMP_UP:
       if (current > (start + ramp_up)) {      // this is the end of the ramp up, ensure the LED is on and change status
@@ -112,10 +182,33 @@ void loop() {
     case LED_OFF:
       if (motion == PIR_MOTION)                 // motion detected
       {
-        next_check = millis() + led_on_time + ramp_up;
-        led_status = LED_RAMP_UP;
-        start = millis();
-        Serial.println("Motion detected - turning on");
+        Serial.println("Motion detected - check for light level");
+        if (sensorValue < ambientTrigger) {     // we only turn on if the ambient light is below this value
+          next_check = millis() + led_on_time + ramp_up;
+          led_status = LED_RAMP_UP;
+          start = millis();
+          Serial.println("Ambient light level low enough - turning on");
+        }
       }   // end of LED_OFF section
   }       // end of case statement
 }         // end of the main loop
+
+/*
+  SerialEvent occurs whenever a new data comes in the
+ hardware serial RX.  This routine is run between each
+ time loop() runs, so using delay inside loop can delay
+ response.  Multiple bytes of data may be available.
+ */
+void serialEvent() {
+  while (Serial.available()) {
+    // get the new byte:
+    char inChar = (char)Serial.read();
+    // add it to the inputString:
+    inputString += inChar;
+    // if the incoming character is a newline, set a flag
+    // so the main loop can do something about it:
+    if (inChar == '\n') {
+      stringComplete = true;
+    }
+  }
+}
