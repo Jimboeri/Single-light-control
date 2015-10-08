@@ -16,6 +16,7 @@
 #define PIR_INPUT 8
 #define LED 9
 #define LDR A0
+#define POT A1
 
 #define LED_OFF 0
 #define LED_RAMP_UP 1
@@ -25,6 +26,8 @@
 #define PIR_MOTION 1
 #define PIR_STILL 0
 
+#define MIN_LDR 100   // This is the minimum value the LRD will register
+
 /*
  * Define variables
  */
@@ -32,14 +35,15 @@ int motion = 0;           // holds the status of the PIR output
 int led_status = LED_RAMP_UP;
 int ramp_up = 2500;       // milliseconds needed to bring LED up to full brightness
 int ramp_down = 5000;
-int led_on_time = 10000;   // milliseconds the light will stay on before checking the PIR again
+int led_on_time = 30000;   // milliseconds the light will stay on before checking the PIR again
 long var1 = 0;
 int brightness;
 long temp1;
-int sensorValue = 0;        // value read from the pot
+int sensorValue = 0;        // value read from the light dependent resistor
+int potValue = 0;           // value from the potentiometer
+int potMapped = 0;          // this will store the adjusted potentiometer value so it can be compared to the LDR
 int outputValue = 0;        // value output to the PWM (analog out)
 int report_delay = 5000;    // millisec between reporting on sensor value
-int ambientTrigger = 850;   // Sensor value needs to be below this value before light will come on
 
 unsigned long start_delay = 10000L;  // The PIR takes about 1 minute to settle down
 unsigned long next_check = 0; // This is the next time the PIR will be checked
@@ -98,16 +102,16 @@ void setup() {
   Serial.print(ramp_down);
   Serial.println(" millseconds");
 
-  EEPROM.get(9, t2);      // ambientTrigger parameter
+  EEPROM.get(9, t2);      // led_on_time parameter
   if (t2 < 30000000 && t2 > 0)
-    ambientTrigger = t2;
+    led_on_time = t2;
   else {
-    EEPROM.put(9, ambientTrigger);
+    EEPROM.put(9, led_on_time);
     Serial.print("Initial setup of ");
   }
-  Serial.print("Ambient light level trigger is ");
-  Serial.print(ambientTrigger);
-  Serial.println("");
+  Serial.print("Time light is to stay on is ");
+  Serial.print(led_on_time);
+  Serial.println(" milliseconds");
 
 }
 
@@ -116,21 +120,22 @@ void loop() {
   motion = digitalRead(PIR_INPUT);
   current = millis();
   sensorValue = analogRead(LDR);
-
-  serialEvent(); //call the function
-  // print the string when a newline arrives:
-  if (stringComplete) {
-    Serial.println(inputString);
-    // clear the string:
-    inputString = "";
-    stringComplete = false;
-  }
+  potValue = analogRead(POT);
+  potMapped = map(potValue, 0, 1023, MIN_LDR, 1023);
+  serialEvent();            // call the function
+  if (stringComplete)       // keep all serial processing in one place
+    process_serial();
 
   // output sensor value to serial channel
   if (report_sensor < current) {
     report_sensor = current + report_delay;
     Serial.print("Raw ");
-    Serial.println(sensorValue);
+    Serial.print(sensorValue);
+    Serial.print (" Pot value ");
+    Serial.print(potValue);
+    Serial.print (" Pot adjusted ");
+    Serial.print(potMapped);
+    Serial.println();
   }
 
   switch (led_status) {
@@ -166,12 +171,12 @@ void loop() {
     case LED_ON:
       if (motion == PIR_MOTION)
       {
-        next_check = millis() + led_on_time;    // if the PIR detects motion reset the next check time
+        next_check = current + led_on_time;    // if the PIR detects motion reset the next check time
         break;
       }
       else
       {
-        if (next_check < millis())              // if no motion has been detected by the next check, start the ramp down
+        if (next_check < current)              // if no motion has been detected by the next check, start the ramp down
         {
           led_status = LED_RAMP_DOWN;
           start = millis();
@@ -183,7 +188,7 @@ void loop() {
       if (motion == PIR_MOTION)                 // motion detected
       {
         Serial.println("Motion detected - check for light level");
-        if (sensorValue < ambientTrigger) {     // we only turn on if the ambient light is below this value
+        if (sensorValue < potMapped) {     // we only turn on if the ambient light is below this value
           next_check = millis() + led_on_time + ramp_up;
           led_status = LED_RAMP_UP;
           start = millis();
@@ -211,4 +216,12 @@ void serialEvent() {
       stringComplete = true;
     }
   }
+}
+
+void process_serial() {
+  Serial.println(inputString);
+  // clear the string:
+  inputString = "";
+  stringComplete = false;
+
 }
