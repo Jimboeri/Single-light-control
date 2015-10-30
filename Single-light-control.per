@@ -1,0 +1,271 @@
+[Version]
+Product,2
+File,16
+{
+"Config" : {
+  "NetImportFormat" : "Protel"
+},
+"Board" : {
+  "Width" : 26,
+  "Height" : 26,
+  "Pattern" : "Strip"
+},
+"CelledOutlines" : [
+  { "Name" : "DIP28N", "Locked" : false,
+    "Rows" : [
+    [{"Pin" : "1"},"Free","Free",{"Pin" : "28"}],
+    [{"Pin" : "2"},"Body","Body",{"Pin" : "27"}],
+    [{"Pin" : "3"},"Body","Body",{"Pin" : "26"}],
+    [{"Pin" : "4"},"Body","Body",{"Pin" : "25"}],
+    [{"Pin" : "5"},"Body","Body",{"Pin" : "24"}],
+    [{"Pin" : "6"},"Body","Body",{"Pin" : "23"}],
+    [{"Pin" : "7"},"Body","Body",{"Pin" : "22"}],
+    [{"Pin" : "8"},"Body","Body",{"Pin" : "21"}],
+    [{"Pin" : "9"},"Body","Body",{"Pin" : "20"}],
+    [{"Pin" : "10"},"Body","Body",{"Pin" : "19"}],
+    [{"Pin" : "11"},"Body","Body",{"Pin" : "18"}],
+    [{"Pin" : "12"},"Body","Body",{"Pin" : "17"}],
+    [{"Pin" : "13"},"Body","Body",{"Pin" : "16"}],
+    [{"Pin" : "14"},"Body","Body",{"Pin" : "15"}]
+    ]
+  },
+  { "Name" : "3X2CONN", "Locked" : false,
+    "Rows" : [
+    [{"Pin" : "6"},"Body",{"Pin" : "5"}],
+    [{"Pin" : "4"},"Body",{"Pin" : "3"}],
+    [{"Pin" : "2"},"Body",{"Pin" : "1"}]
+    ]
+  },
+  { "Name" : "DC_IN", "Locked" : false,
+    "Rows" : [
+    ["Body","Body","Body","Body"],
+    ["Body","Body","Body","Body"],
+    ["Body","Body",{"Pin" : "2"},"Body"],
+    [{"Pin" : "3"},"Body","Body","Body"],
+    ["Body","Body",{"Pin" : "1"},"Body"]
+    ]
+  },
+  { "Name" : "3SIP100", "Locked" : false,
+    "Rows" : [
+    ["Body","Free","Body"],
+    ["Body","Body","Body"]
+    ]
+  },
+  { "Name" : "4SIP100", "Locked" : false,
+    "Rows" : [
+    ["Body","Free","Body"],
+    ["Body","Body","Body"]
+    ]
+  },
+  { "Name" : "SIP2", "Locked" : false,
+    "Rows" : [
+    [{"Pin" : "1"}],
+    [{"Pin" : "2"}]
+    ]
+  },
+  { "Name" : "SIP3", "Locked" : false,
+    "Rows" : [
+    [{"Pin" : "1"}],
+    [{"Pin" : "2"}],
+    [{"Pin" : "3"}]
+    ]
+  },
+  { "Name" : "SIP4", "Locked" : false,
+    "Rows" : [
+    [{"Pin" : "1"}],
+    [{"Pin" : "2"}],
+    [{"Pin" : "3"}],
+    [{"Pin" : "4"}]
+    ]
+  },
+  { "Name" : "SIP1", "Locked" : false,
+    "Rows" : [
+    [{"Pin" : "1"}]
+    ]
+  }
+],
+"LeadedOutlines" : [
+  { "Name" : "AX2_1", "Locked" : false,
+    "BodyLength" : 2, "BodyWidth" : 1,
+    "Pin0Name" : "1", "Pin1Name" : "2", "ShowReference" : true
+  },
+  { "Name" : "AX1_2", "Locked" : false,
+    "BodyLength" : 1, "BodyWidth" : 2,
+    "Pin0Name" : "1", "Pin1Name" : "2", "ShowReference" : true
+  },
+  { "Name" : "AX2_1N", "Locked" : false,
+    "BodyLength" : 2, "BodyWidth" : 1,
+    "Pin0Name" : "1", "Pin1Name" : "2", "ShowReference" : false
+  }
+],
+"RadialOutlines" : [
+],
+"CustomOutlines" : [
+  { "Name" : "TO220", "Locked" : false,
+    "Pins" : [
+    { "Name" : "1", "X5" : 2, "Y5" : 2 },
+    { "Name" : "2", "X5" : 2, "Y5" : 7 },
+    { "Name" : "3", "X5" : 2, "Y5" : 12 }
+    ],
+    "Lines" : [
+    { "X5" : 0, "Y5" : 0, "DX5" : 6, "DY5" : 0},
+    { "X5" : 6, "Y5" : 0, "DX5" : 0, "DY5" : 14},
+    { "X5" : 6, "Y5" : 14, "DX5" : -6, "DY5" : 0},
+    { "X5" : 0, "Y5" : 14, "DX5" : 0, "DY5" : -14},
+    { "X5" : 4, "Y5" : 0, "DX5" : 0, "DY5" : 14}
+    ]
+  }
+],
+"SmdOutlines" : [
+],
+"Components" : [
+  { "Designator" : "U1", "Value" : "ATMega328", "Outline" : "DIP28N",
+  "X1000" : 8000, "Y1000" : 8000, "EndDeltaX" : 0, "EndDeltaY" : 1,
+  "Text" : { "X" : 0, "Y" : 0, "Angle" : 0, "Visible" : true },
+  "Group" : 0
+  },
+  { "Designator" : "U2", "Value" : "LM7805", "Outline" : "TO220",
+  "X1000" : 2000, "Y1000" : 5000, "EndDeltaX" : 0, "EndDeltaY" : 1,
+  "Text" : { "X" : 0, "Y" : 0, "Angle" : 0, "Visible" : true },
+  "Group" : 0
+  },
+  { "Designator" : "DC_Jack", "Value" : "DC_JACK_PJ102AH", "Outline" : "DC_IN",
+  "X1000" : 8000, "Y1000" : 1000, "EndDeltaX" : 0, "EndDeltaY" : 1,
+  "Text" : { "X" : 1, "Y" : -1, "Angle" : 0, "Visible" : true },
+  "Group" : 0
+  },
+  { "Designator" : "To Pot", "Value" : "4x1_HDR", "Outline" : "SIP4",
+  "X1000" : 20000, "Y1000" : 12000, "EndDeltaX" : 0, "EndDeltaY" : 1,
+  "Text" : { "X" : 0, "Y" : -1, "Angle" : 0, "Visible" : true },
+  "Group" : 0
+  },
+  { "Designator" : "MOSFET", "Value" : "N_MOSFET_ENH", "Outline" : "TO220",
+  "X1000" : 15000, "Y1000" : 21000, "EndDeltaX" : 0, "EndDeltaY" : 1,
+  "Text" : { "X" : 0, "Y" : 3, "Angle" : 0, "Visible" : true },
+  "Group" : 0
+  },
+  { "Designator" : "To LED", "Value" : "JUMPER", "Outline" : "SIP2",
+  "X1000" : 18000, "Y1000" : 21000, "EndDeltaX" : 0, "EndDeltaY" : 1,
+  "Text" : { "X" : 0, "Y" : 2, "Angle" : 0, "Visible" : true },
+  "Group" : 0
+  },
+  { "Designator" : "Serial", "Value" : "JUMPER", "Outline" : "SIP2",
+  "X1000" : 3000, "Y1000" : 9000, "EndDeltaX" : 0, "EndDeltaY" : 1,
+  "Text" : { "X" : 0, "Y" : -1, "Angle" : 0, "Visible" : true },
+  "Group" : 0
+  },
+  { "Designator" : "To Sensors", "Value" : "4x1_HDR", "Outline" : "SIP4",
+  "X1000" : 18000, "Y1000" : 13000, "EndDeltaX" : 0, "EndDeltaY" : 1,
+  "Text" : { "X" : -1, "Y" : -1, "Angle" : 0, "Visible" : true },
+  "Group" : 0
+  },
+  { "Designator" : "R1", "Value" : "R1", "Outline" : "AX2_1",
+  "X1000" : 5000, "Y1000" : 8000, "EndDeltaX" : 0, "EndDeltaY" : 6,
+  "Text" : { "X" : 0, "Y" : 0, "Angle" : 0, "Visible" : true },
+  "Group" : 0
+  },
+  { "Designator" : "C1", "Value" : "C 1", "Outline" : "AX1_2",
+  "X1000" : 4000, "Y1000" : 6000, "EndDeltaX" : 0, "EndDeltaY" : 2,
+  "Text" : { "X" : 0, "Y" : -1, "Angle" : 0, "Visible" : true },
+  "Group" : 0
+  },
+  { "Designator" : "10K", "Value" : "R", "Outline" : "AX2_1N",
+  "X1000" : 16000, "Y1000" : 3000, "EndDeltaX" : 0, "EndDeltaY" : 10,
+  "Text" : { "X" : 0, "Y" : 0, "Angle" : 0, "Visible" : true },
+  "Group" : 0
+  }
+],
+"Links" : [
+  { "X" : 5, "Y" : 3, "EndDeltaX" : 0, "EndDeltaY" : 3, "Group" : 0 },
+  { "X" : 12, "Y" : 6, "EndDeltaX" : 0, "EndDeltaY" : 8, "Group" : 0 },
+  { "X" : 7, "Y" : 6, "EndDeltaX" : 0, "EndDeltaY" : 9, "Group" : 0 },
+  { "X" : 13, "Y" : 14, "EndDeltaX" : 0, "EndDeltaY" : 9, "Group" : 0 },
+  { "X" : 6, "Y" : 7, "EndDeltaX" : 0, "EndDeltaY" : 7, "Group" : 0 },
+  { "X" : 14, "Y" : 7, "EndDeltaX" : 0, "EndDeltaY" : 8, "Group" : 0 },
+  { "X" : 12, "Y" : 15, "EndDeltaX" : 0, "EndDeltaY" : 1, "Group" : 0 },
+  { "X" : 17, "Y" : 15, "EndDeltaX" : 0, "EndDeltaY" : 6, "Group" : 0 },
+  { "X" : 7, "Y" : 21, "EndDeltaX" : 0, "EndDeltaY" : 3, "Group" : 0 },
+  { "X" : 19, "Y" : 16, "EndDeltaX" : 0, "EndDeltaY" : 8, "Group" : 0 }
+],
+"Breaks" : [
+  { "X" : 9, "Y" : 8, "Shift" : "none", "Group" : 0 },
+  { "X" : 9, "Y" : 9, "Shift" : "none", "Group" : 0 },
+  { "X" : 9, "Y" : 10, "Shift" : "none", "Group" : 0 },
+  { "X" : 9, "Y" : 11, "Shift" : "none", "Group" : 0 },
+  { "X" : 9, "Y" : 12, "Shift" : "none", "Group" : 0 },
+  { "X" : 9, "Y" : 13, "Shift" : "none", "Group" : 0 },
+  { "X" : 9, "Y" : 14, "Shift" : "none", "Group" : 0 },
+  { "X" : 9, "Y" : 15, "Shift" : "none", "Group" : 0 },
+  { "X" : 9, "Y" : 16, "Shift" : "none", "Group" : 0 },
+  { "X" : 9, "Y" : 17, "Shift" : "none", "Group" : 0 },
+  { "X" : 9, "Y" : 18, "Shift" : "none", "Group" : 0 },
+  { "X" : 9, "Y" : 19, "Shift" : "none", "Group" : 0 },
+  { "X" : 9, "Y" : 20, "Shift" : "none", "Group" : 0 },
+  { "X" : 9, "Y" : 21, "Shift" : "none", "Group" : 0 },
+  { "X" : 19, "Y" : 13, "Shift" : "none", "Group" : 0 },
+  { "X" : 16, "Y" : 21, "Shift" : "none", "Group" : 0 },
+  { "X" : 14, "Y" : 16, "Shift" : "none", "Group" : 0 }
+],
+"Wires" : [
+],
+"Text" : [
+],
+"Nets" : [
+    { "Node" : "N000000", "Components" : [
+    { "Name" : "Serial", "Pins" : ["1"] },
+    { "Name" : "U1", "Pins" : ["2"] }
+    ] },
+    { "Node" : "N000001", "Components" : [
+    { "Name" : "Serial", "Pins" : ["2"] },
+    { "Name" : "U1", "Pins" : ["3"] }
+    ] },
+    { "Node" : "N000002", "Components" : [
+    { "Name" : "To Sensors", "Pins" : ["4"] },
+    { "Name" : "U1", "Pins" : ["14"] }
+    ] },
+    { "Node" : "N000003", "Components" : [
+    { "Name" : "MOSFET", "Pins" : ["1"] },
+    { "Name" : "U1", "Pins" : ["15"] }
+    ] },
+    { "Node" : "N000004", "Components" : [
+    { "Name" : "DC_Jack", "Pins" : ["1"] },
+    { "Name" : "U2", "Pins" : ["1"] }
+    ] },
+    { "Node" : "N000005", "Components" : [
+    { "Name" : "10K", "Pins" : ["1"] },
+    { "Name" : "C1", "Pins" : ["1"] },
+    { "Name" : "DC_Jack", "Pins" : ["2"] },
+    { "Name" : "MOSFET", "Pins" : ["3"] },
+    { "Name" : "To Pot", "Pins" : ["3"] },
+    { "Name" : "To Sensors", "Pins" : ["2"] },
+    { "Name" : "U1", "Pins" : ["22", "8"] },
+    { "Name" : "U2", "Pins" : ["2"] }
+    ] },
+    { "Node" : "N000006", "Components" : [
+    { "Name" : "R1", "Pins" : ["2"] },
+    { "Name" : "To LED", "Pins" : ["1"] },
+    { "Name" : "To Pot", "Pins" : ["4"] },
+    { "Name" : "To Sensors", "Pins" : ["3"] },
+    { "Name" : "U1", "Pins" : ["20", "21", "7"] },
+    { "Name" : "U2", "Pins" : ["3"] }
+    ] },
+    { "Node" : "N000007", "Components" : [
+    { "Name" : "C1", "Pins" : ["2"] },
+    { "Name" : "R1", "Pins" : ["1"] },
+    { "Name" : "U1", "Pins" : ["1"] }
+    ] },
+    { "Node" : "N000008", "Components" : [
+    { "Name" : "To Pot", "Pins" : ["1"] },
+    { "Name" : "U1", "Pins" : ["24"] }
+    ] },
+    { "Node" : "N000009", "Components" : [
+    { "Name" : "MOSFET", "Pins" : ["2"] },
+    { "Name" : "To LED", "Pins" : ["2"] }
+    ] },
+    { "Node" : "N000010", "Components" : [
+    { "Name" : "10K", "Pins" : ["2"] },
+    { "Name" : "To Sensors", "Pins" : ["1"] },
+    { "Name" : "U1", "Pins" : ["23"] }
+    ] }
+]
+}
